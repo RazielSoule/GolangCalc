@@ -1,4 +1,4 @@
-//Калькулятор Golang
+// Калькулятор Golang
 package main
 
 import (
@@ -42,9 +42,11 @@ func main() {
 		}
 
 		if isRoman1 && isRoman2 {
-			//Если оба операнда - римские
-			value1 = toArabicConvert(strings.ToUpper(rawValue1))
-			value2 = toArabicConvert(strings.ToUpper(rawValue2))
+			// //Если оба операнда - римские
+			// value1 = toArabicConvert(strings.ToUpper(rawValue1))
+			// value2 = toArabicConvert(strings.ToUpper(rawValue2))
+			value1 = romanToInt(strings.ToUpper(rawValue1))
+			value2 = romanToInt(strings.ToUpper(rawValue2))
 			result = calculate(value1, value2, operation)
 			if result > 0 {
 				fmt.Println(toRomanConvert(result))
@@ -164,4 +166,38 @@ func toArabicConvert(roman string) (arabicOut int) {
 		os.Exit(1)
 	}
 	return
+}
+
+func romanToInt(s string) int { // Взято из сети для проверки
+	characterMap := map[byte]int{
+		'I': 1,
+		'V': 5,
+		'X': 10,
+		'L': 50,
+		'C': 100,
+		'D': 500,
+		'M': 1000,
+	}
+
+	length := len(s)
+
+	if length == 0 {
+		return 0
+	}
+
+	if length == 1 {
+		return characterMap[s[0]]
+	}
+
+	sum := characterMap[s[length-1]]
+
+	for i := length - 2; i >= 0; i-- {
+		if characterMap[s[i]] < characterMap[s[i+1]] {
+			sum -= characterMap[s[i]]
+		} else {
+			sum += characterMap[s[i]]
+		}
+	}
+
+	return sum
 }
